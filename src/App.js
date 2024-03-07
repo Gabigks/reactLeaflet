@@ -3,7 +3,7 @@ import './App.css';
 import "leaflet/dist/leaflet.css";
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Icon } from 'leaflet';
+import { Icon, divIcon } from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 
@@ -29,6 +29,12 @@ function App() {
     iconSize: [38, 38]
   });
 
+  const createCustomClusterIcon = (cluster) => { 
+    return new divIcon({
+      html: <div class=""></div>
+    })
+  };
+
   return (
     <MapContainer center={[-27.103924, -52.613936]} zoom={13}>
       <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' 
@@ -36,7 +42,10 @@ function App() {
       />
 
       
-      <MarkerClusterGroup>
+      <MarkerClusterGroup
+        chunkedLoading
+        iconCreateFunction={createCustomClusterIcon}
+      >
         {markers.map((marker) => ( 
           <Marker position={marker.geocode} icon={customIcon}>
             <Popup>
